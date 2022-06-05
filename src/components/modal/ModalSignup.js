@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { useRef, useContext } from "react";
 import classes from "./ModalSignup.module.css";
 import AuthContext from "../../store/authContext";
+import Validator from "../validate/validator";
 
 const ModalSignup = (props) => {
   const authCtx = useContext(AuthContext); 
@@ -56,27 +57,43 @@ const ModalSignup = (props) => {
       });
   };
 
+  const handleValid = (id) => {
+    Validator({
+      form: '#formRegister',
+      rules: [
+        Validator.isRequired(`#${id}`),
+      ]
+    })
+  }
+
+  
   return ReactDOM.createPortal(
+    
     <div className={classes.modal}>
       <header className={classes.modal__header}>
         <a href="#" onClick={exitRegister} className={classes.close} />
         <h1>Enter on Roomless</h1>
         <p>Discover our community and start searching or creating listings!</p>
       </header>
-      <form onSubmit={signupHandle}>
+      <form onSubmit={signupHandle} className="form" id="formRegister">
         <div className={classes.modal__login}>
           <div className={classes.control}>
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="name" className="form-label">Full Name</label>
             <input
               type="text"
               id="name"
               placeholder="Full name..."
               ref={customerNameRef}
+              onBlur={() => {
+                handleValid('name')
+                }
+              }
             />
+            <span class="form-message"></span>
           </div>
 
           <div className={classes.control}>
-            <label htmlFor="phone">Phone Number</label>
+            <label htmlFor="phone" className="form-label">Phone Number</label>
             <p>
               Your phone number will not be public. It will be used for
               communication between tenant and owner.
@@ -87,10 +104,11 @@ const ModalSignup = (props) => {
               placeholder="Phone number..."
               ref={phoneRef}
             />
+            <span class="form-message"></span>
           </div>
 
           <div className={classes.control}>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email" className="form-label">Email</label>
             <p>
               Your email address will not be public. It will be used for
               communication between tenant and owner and for internal
@@ -101,11 +119,16 @@ const ModalSignup = (props) => {
               id="email"
               placeholder="Email..."
               ref={emailRef}
+              onBlur={() => {
+                handleValid('email')
+                }
+              }
             />
+            <span class="form-message"></span>
           </div>
 
           <div className={classes.control}>
-            <label htmlFor="citizenId">Citizen Identification</label>
+            <label htmlFor="citizenId" className="form-label">Citizen Identification</label>
             <p>Your Identification will not be public to everyone.</p>
             <input
               type="text"
@@ -113,16 +136,18 @@ const ModalSignup = (props) => {
               placeholder="Identification..."
               ref={citizenIdRef}
             />
+            <span class="form-message"></span>
           </div>
 
           <div className={classes.control}>
-            <label for="birthday">Birthday:</label>
+            <label for="birthday" className="form-label">Birthday:</label>
             <input
               type="date"
               id="birthday"
               name="birthday"
               ref={birthdayRef}
             />
+            <span class="form-message"></span>
           </div>
 
           <div className={classes.control}>
@@ -415,32 +440,35 @@ const ModalSignup = (props) => {
           </div>
 
           <div className={classes.control}>
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username" className="form-label">Username</label>
             <input
               type="text"
               id="username"
               placeholder="Username..."
               ref={usernameRef}
             />
+            <span class="form-message"></span>
           </div>
 
           <div className={classes.control}>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" className="form-label">Password</label>
             <input
               type="password"
               id="password"
               placeholder="Password..."
               ref={passwordRef}
             />
+            <span class="form-message"></span>
           </div>
 
           <div className={classes.control}>
-            <label htmlFor="password">Confirm Password</label>
+            <label htmlFor="password" className="form-label">Confirm Password</label>
             <input
               type="password"
               id="passwordConfirm"
               placeholder="Confirm Password..."
             />
+            <span class="form-message"></span>
           </div>
 
           <div className={classes.consentConfirm}>
@@ -467,4 +495,5 @@ const ModalSignup = (props) => {
     document.getElementById("modal-root")
   );
 };
+
 export default ModalSignup;
