@@ -67,6 +67,7 @@ const ReservationRequest = (props) => {
               <p>
                 <span>
                   <BsCheckCircle />
+                  
                 </span>{" "}
                 Daily rent booked: <span>{reservation.quantityDates}</span>
               </p>

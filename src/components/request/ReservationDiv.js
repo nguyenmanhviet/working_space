@@ -46,7 +46,8 @@ const ReservationDiv = (props) => {
       }, []);
 
   return (
-    <div className={classes.reservation}>
+    <div className={classes.reservation}>  
+    
       <div className={classes.div1}>
         <div className={classes.label}>
           <label>{props.reservation.createDate}</label>
