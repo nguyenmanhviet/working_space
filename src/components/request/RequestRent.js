@@ -86,7 +86,7 @@ const RequestRent = (props) => {
             <NavLink
               className={classes.linkReservation}
               to={{
-                pathname: `/request/1/reservation`,
+                pathname: `/request/${reservation.reservationId}/reservation`,
               }}
               key={reservation.reservationId}
             >

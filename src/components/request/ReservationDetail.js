@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import classes from "./ReservationDetail.module.css";
 import RoomCard from "./RoomCard";
 import PropertyCard from "./PropertyCard";
+import Map from "../properties/Map";
 
 const ReservationDetail = (props) => {
   const [reservation, setReservation] = useState({});

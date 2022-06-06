@@ -88,15 +88,26 @@
   font-weight: 750;
   font-size: 20px;
   color: white;
-  background-color: #eb626c;
   border: none;
   border-radius: 15px;
   width: 48%;
   cursor: pointer;
 }
 
-.btnContainer button:hover {
-    background-color: #de6b72;
+.cancelBtn:hover {
+    background-color: #de9196;
+}
+
+.approvedBtn {
+  background-color: #44ac44;
+}
+
+.approvedBtn:hover {
+  background-color: #83c483;
+}
+
+.cancelBtn {
+  background-color: #eb626c;
 }
 
 .cancelBtn {
@@ -151,4 +162,38 @@
   font-size: 20px;
   font-weight: 600;
   color: rgb(114, 106, 106);
+}
+
+
+.status1 {
+  /* border:1px solid black; */
+  height: fit-content;
+  width: 100%;
+  /* border: 1px solid #fece04; */
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15)!important;
+  display: flex;
+  margin-top: 10px;
+  /* border: 1px solid #1e8489; */
+}
+
+.icon {
+  color: #fece04;
+  font-size: 40px;
+}
+
+.text {
+  /* border: 1px solid black; */
+  padding: 10px 5px;
+}
+
+.notify {
+  color:#fece04;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.note {
+  color:rgb(114, 106, 106);
+  font-size: 13px;
 }
