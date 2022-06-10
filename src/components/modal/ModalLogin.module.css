@@ -32,7 +32,7 @@
 .close {
   position: absolute;
   right: -85px;
-  top: -10px;
+  top: 8px;
   width: 35px;
   height: 35px;
   opacity: 0.4;
@@ -67,6 +67,9 @@
 .modal__header p {
   margin-top: 0px;
   margin-bottom: 0px;
+}
+.container_signup {
+  padding-bottom: 10px;
 }
 
 .container_signup h3 {
