@@ -1,0 +1,9 @@
+.form-message{
+    color: rgb(193, 63, 63);
+    margin-top: 5px;
+    margin-left: 3px;
+}
+
+.invalid input{
+    border: 1px solid red;
+}
