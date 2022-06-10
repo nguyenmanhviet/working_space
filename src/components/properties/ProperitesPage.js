@@ -6,7 +6,7 @@ import { IoIosBasket, IoIosArrowDown } from "react-icons/io";
 import ListProperties from "./ListProperties";
 import SimpleMap from "./Map";
 import Map from "./Map";
-
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 import Property from "./Property";
 
 let initCoordinate = {
@@ -37,6 +37,7 @@ function compareNew( a, b ) {
 }
 
 const PropertiesList = (props) => {
+  NotificationManager.infor('Hello');
   const [coordinate, setCoordinate] = useState(initCoordinate);
   const [properties, setProperties] = useState([]);
 
@@ -82,7 +83,7 @@ const PropertiesList = (props) => {
 
   return (
     <div className={classes.container}>
-       
+      <NotificationContainer />
       <div className={classes.propertyContainer}>
         <div className={classes.filter}>
           <button

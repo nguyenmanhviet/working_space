@@ -17,6 +17,7 @@ import 'react-notifications/lib/notifications.css';
 const RoomPage = (props) => {
   // NotificationManager.success('Success message', 'Title here');
   // NotificationManager.info('Info message');
+  NotificationManager.infor('Success message', 'title here');
 
   const [property, setProperty] = useState({});
   const [propertyTypeId, setPropertyTypeId] = useState("");
