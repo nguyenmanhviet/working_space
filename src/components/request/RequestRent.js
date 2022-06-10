@@ -35,6 +35,7 @@ const RequestRent = (props) => {
     )
       .then((res) => res.json())
       .then((data) => {
+        
         setReservation(data.data);
       })
       .catch((err) => console.log(err));

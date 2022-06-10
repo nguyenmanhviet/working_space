@@ -36,6 +36,7 @@ const ReservationDetail = (props) => {
       .then((data) => {
         fetch("http://localhost:8080/api/rooms/" + data.data.roomId, {
           method: "GET",
+          
           headers: headers,
         })
           .then((res) => res.json())
