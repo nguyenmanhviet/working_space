@@ -67,6 +67,7 @@ const ModalSignup = (props) => {
   const handleValidName = (id) => {
     Validator({
       form: '#formRegister',
+      errorSelector: '.form-message',
       rules: [
         Validator.isRequired(`#${id}`),
       ]
@@ -75,6 +76,7 @@ const ModalSignup = (props) => {
   const handleValidEmail = (id) => {
     Validator({
       form: '#formRegister',
+      errorSelector: '.form-message',
       rules: [
         Validator.isEmail(`#${id}`),
       ]
@@ -83,6 +85,7 @@ const ModalSignup = (props) => {
   const handleValidPhone = (id) => {
     Validator({
       form: '#formRegister',
+      errorSelector: '.form-message',
       rules: [
         Validator.isPhoneNumber(`#${id}`),
       ]
@@ -91,6 +94,7 @@ const ModalSignup = (props) => {
   const handleValidCitizen = (id) => {
     Validator({
       form: '#formRegister',
+      errorSelector: '.form-message',
       rules: [
         Validator.isPhoneNumber(`#${id}`),
       ]
@@ -99,6 +103,7 @@ const ModalSignup = (props) => {
   const handleValidUsername = (id) => {
     Validator({
       form: '#formRegister',
+      errorSelector: '.form-message',
       rules: [
         Validator.isUsername(`#${id}`),
       ]
@@ -107,6 +112,7 @@ const ModalSignup = (props) => {
   const handleValidPassword = (id) => {
     Validator({
       form: '#formRegister',
+      errorSelector: '.form-message',
       rules: [
         Validator.isPassword(`#${id}`),
       ]
@@ -115,6 +121,7 @@ const ModalSignup = (props) => {
   const handleValidConfirmPassword = (id, password) => {
     Validator({
       form: '#formRegister',
+      errorSelector: '.form-message',
       rules: [
         Validator.confirmPassword(`#${id}`, password),
       ]

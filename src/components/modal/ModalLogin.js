@@ -1,7 +1,8 @@
 import ReactDOM from "react-dom";
 import { useState, useRef, useContext } from "react";
 import { useHistory } from "react-router-dom";
-
+import Validator from "../validate/Validator";
+import "../validate/Validator.css"
 import AuthContext from "../../store/authContext";
 import classes from "./ModalLogin.module.css";
 
@@ -53,6 +54,24 @@ const ModalLogin = (props) => {
         }
       });
   };
+  const handleValidUsername = (id) => {
+    Validator({
+      form: '#formSignin',
+      errorSelector: '.form-message',
+      rules: [
+        Validator.isUsername(`#${id}`),
+      ]
+    })
+  }
+  const handleValidPassword = (id) => {
+    Validator({
+      form: '#formSignin',
+      errorSelector: '.form-message',
+      rules: [
+        Validator.isPassword(`#${id}`),
+      ]
+    })
+  }
   return ReactDOM.createPortal(
     <div className={classes.modal}>
       <header className={classes.modal__header}>
@@ -64,17 +83,22 @@ const ModalLogin = (props) => {
           <button onClick={props.onTranferFrom}>SIGN UP</button>
         </div>
       </header>
-      <form onSubmit={submitHandle}>
+      <form onSubmit={submitHandle} className="form" id="formSignin">
         <div className={classes.modal__login}>
           <div className={classes.control}>
-            <label htmlFor="username">Email or Username</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
               id="username"
               placeholder="Email"
               required
               ref={emailInputRef}
+              onFocus={() => {
+                handleValidUsername('username')
+                }
+              }
             />
+            <div className="form-message"></div>
           </div>
           <div className={classes.control}>
             <label htmlFor="password">Password</label>
@@ -84,7 +108,12 @@ const ModalLogin = (props) => {
               placeholder="Password"
               required
               ref={passwordInputRef}
+              onFocus={() => {
+                handleValidPassword('password')
+                }
+              }
             />
+            <div className="form-message"></div>
           </div>
           <div className={classes.actions}>
             <button className="btn">Login</button>

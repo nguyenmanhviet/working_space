@@ -2,7 +2,7 @@ function Validator(options){
     function validate(inputElement, rule){
         console.log("input element", inputElement);
         var errorMessage = rule.test(inputElement.value);
-        var errorElement = inputElement.parentElement.querySelector('.form-message');
+        var errorElement = inputElement.parentElement.querySelector(options.errorSelector);
         
         if (errorMessage){
             errorElement.innerText = errorMessage;
@@ -24,7 +24,7 @@ function Validator(options){
                 }
                 
                 inputElement.oninput = function (){
-                    var errorElement = inputElement.parentElement.querySelector('.form-message');
+                    var errorElement = inputElement.parentElement.querySelector(options.errorSelector);
                     errorElement.innerText = '';
                     inputElement.parentElement.classList.remove('invalid');
   
