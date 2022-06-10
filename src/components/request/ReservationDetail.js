@@ -1,4 +1,5 @@
 import { IoIosArrowRoundDown, IoIosArrowRoundBack } from "react-icons/io";
+import {useHistory} from "react-router-dom";
 import {
   BsCheckCircle,
   BsPaypal,
@@ -13,13 +14,66 @@ import classes from "./ReservationDetail.module.css";
 import RoomCard from "./RoomCard";
 import PropertyCard from "./PropertyCard";
 import Map from "../properties/Map";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
 
 const ReservationDetail = (props) => {
+  const history = useHistory();
   const [reservation, setReservation] = useState({});
   const [room, setRoom] = useState({});
   const [property, setProperty] = useState({});
   const params = useParams();
   const { reservationId } = params;
+
+  const handleCancelRequest = () => {
+    fetch(
+      `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=4`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const newReservation = {
+          ...reservation,
+          reservationStatusId: 4,
+        }
+        setReservation(newReservation);
+        // window.location.reload();
+        NotificationManager.error('You cancelled the request');
+      })
+      .catch((err) => console.log(err));
+  }
+
+  const handleCompleteRequest = () => {
+    fetch(
+      `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=2`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const newReservation = {
+          ...reservation,
+          reservationStatusId: 2,
+        }
+        setReservation(newReservation);
+        // window.location.reload();
+        NotificationManager.success('You rent the room successfully!', 'Completed')
+      })
+      .catch((err) => console.log(err));
+  }
+
 
   useEffect(() => {
     let headers = new Headers();
@@ -62,9 +116,12 @@ const ReservationDetail = (props) => {
 
   return (
     <div className={classes.container}>
+      <div>
+        <NotificationContainer/>
+      </div>
       <div className={classes.header}>
         <div className={classes.goBack}>
-          <button>
+          <button onClick={() => history.goBack()}>
             <span>
               <IoIosArrowRoundBack />
             </span>
@@ -100,7 +157,17 @@ const ReservationDetail = (props) => {
               <IoIosArrowRoundDown />
             </span>
           </div>
-          <PropertyCard property={property} />
+          <div className={classes.map}>
+            <label className={classes.name}>Property Address</label>
+            <p className={classes.address}>
+              Via Torino, Milan, Città Metropolitana Di Milano
+            </p>
+            <Map
+              lat="16.089616712151383"
+              lng="108.14348783953365"
+              height="300px"
+            ></Map>
+          </div>
         </div>
         <div className={classes.information}>
           <div className={classes.wrapper}>
@@ -282,7 +349,7 @@ const ReservationDetail = (props) => {
                           amount: {
                             currency_code: "USD",
                             // value: "" + props.reservation.total,
-                            value: "12.12",
+                            value: "" + reservation.total,
                             showSpinner: true,
                           },
                         },
@@ -291,8 +358,7 @@ const ReservationDetail = (props) => {
                   }}
                   onApprove={(data, actions) => {
                     return actions.order.capture().then((details) => {
-                      // const name = details.payer.name.given_name;
-                      // alert(`Transaction completed by ${name}`);
+                      handleCompleteRequest();
                     });
                   }}
                 />
@@ -308,7 +374,7 @@ const ReservationDetail = (props) => {
                 reservation.
               </p>
             <div className={classes.btnContainer}>
-              <button className={classes.btnRent}>XCancel request</button>
+              <button className={classes.btnRent} onClick={handleCancelRequest}>XCancel request</button>
             </div>
           </div>
         </div>

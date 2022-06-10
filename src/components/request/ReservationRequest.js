@@ -7,6 +7,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import classes from "./ReservationRequest.module.css";
+import {useHistory} from "react-router-dom";
 import {
   IoIosArrowRoundBack,
   IoIosPerson,
@@ -14,8 +15,16 @@ import {
 } from "react-icons/io";
 import { HiOutlineMail } from "react-icons/hi";
 import { Carousel } from "react-bootstrap";
-import { IoAlarmSharp, IoCheckmarkCircleSharp, IoWalletSharp, IoCloseCircleSharp } from "react-icons/io5";
-
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import {
+  IoAlarmSharp,
+  IoWalletSharp,
+  IoCloseCircleSharp,
+  IoCheckmarkCircleSharp,
+} from "react-icons/io5";
 
 import {
   BsCheckCircle,
@@ -25,14 +34,61 @@ import {
 } from "react-icons/bs";
 
 const ReservationRequest = (props) => {
+  const history = useHistory();
   const params = useParams();
   const { reservationId } = params;
-
+  // NotificationManager.success('You approved for renting the room', 'Success')
   const [reservation, setReservation] = useState({});
   const [room, setRoom] = useState({});
   const [property, setProperty] = useState({});
   const [customer, setCustomer] = useState({});
   const [propertyType, setPropertyType] = useState("");
+
+  const handleApproveRequest = () => {
+    fetch(
+      `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=3`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const newReservation = {
+          ...reservation,
+          reservationStatusId: 3,
+        }
+        setReservation(newReservation);
+        // window.location.reload();
+        NotificationManager.success('You approved for renting the room', 'Success')
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleCancelRequest = () => {
+    fetch(
+      `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=4`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const newReservation = {
+          ...reservation,
+          reservationStatusId: 4,
+        }
+        setReservation(newReservation);
+        // window.location.reload();
+        NotificationManager.error('You rejected for renting the room');
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     let headers = new Headers();
@@ -93,9 +149,12 @@ const ReservationRequest = (props) => {
 
   return (
     <div className={classes.container}>
+      <div>
+        <NotificationContainer />
+      </div>
       <div className={classes.header}>
         <div className={classes.goBack}>
-          <button>
+          <button onClick={() => history.goBack()}>
             <span>
               <IoIosArrowRoundBack />
             </span>
@@ -186,130 +245,144 @@ const ReservationRequest = (props) => {
               </p>
             </div>
             {reservation.reservationStatusId === 1 && (
+              <div
+                className={classes.status1}
+                style={{
+                  border: "1px solid #fece04",
+                }}
+              >
                 <div
-                  className={classes.status1}
+                  className={classes.icon}
                   style={{
-                    border: "1px solid #fece04",
+                    color: "#fece04",
                   }}
                 >
+                  <IoAlarmSharp />
+                </div>
+                <div className={classes.text}>
                   <div
-                    className={classes.icon}
+                    className={classes.notify}
                     style={{
                       color: "#fece04",
                     }}
                   >
-                    <IoAlarmSharp />
+                    The request must be confirmed.
                   </div>
-                  <div className={classes.text}>
-                    <div
-                      className={classes.notify}
-                      style={{
-                        color: "#fece04",
-                      }}
-                    >
-                      The request must be confirmed.
-                    </div>
-                    <div className={classes.note}>
-                      The request must be confirmed by the owner of the room.
-                    </div>
+                  <div className={classes.note}>
+                    The request must be confirmed by the owner of the room.
                   </div>
                 </div>
-              )}
-              {reservation.reservationStatusId === 2 && (
+              </div>
+            )}
+            {reservation.reservationStatusId === 2 && (
+              <div
+                className={classes.status1}
+                style={{
+                  border: "1px solid #44ac44",
+                }}
+              >
                 <div
-                  className={classes.status1}
+                  className={classes.icon}
                   style={{
-                    border: "1px solid #44ac44",
+                    color: "#44ac44",
                   }}
                 >
+                  <IoCheckmarkCircleSharp />
+                </div>
+                <div className={classes.text}>
                   <div
-                    className={classes.icon}
+                    className={classes.notify}
                     style={{
                       color: "#44ac44",
                     }}
                   >
-                    <IoCheckmarkCircleSharp />
+                    The request is completed.
                   </div>
-                  <div className={classes.text}>
-                    <div
-                      className={classes.notify}
-                      style={{
-                        color: "#44ac44",
-                      }}
-                    >
-                      The request is completed.
-                    </div>
-                    <div className={classes.note}>
-                      The owner accepted and you paid the total.
-                    </div>
+                  <div className={classes.note}>
+                    The owner accepted and you paid the total.
                   </div>
                 </div>
-              )}
-              {reservation.reservationStatusId === 3 && (
+              </div>
+            )}
+            {reservation.reservationStatusId === 3 && (
+              <div
+                className={classes.status1}
+                style={{
+                  border: "1px solid #fece04",
+                }}
+              >
                 <div
-                  className={classes.status1}
+                  className={classes.icon}
                   style={{
-                    border: "1px solid #fece04",
+                    color: "#fece04",
                   }}
                 >
+                  <IoWalletSharp />
+                </div>
+                <div className={classes.text}>
                   <div
-                    className={classes.icon}
+                    className={classes.notify}
                     style={{
                       color: "#fece04",
                     }}
                   >
-                    <IoWalletSharp />
+                    The request is waiting for your deposit.
                   </div>
-                  <div className={classes.text}>
-                    <div
-                      className={classes.notify}
-                      style={{
-                        color: "#fece04",
-                      }}
-                    >
-                      The request is waiting for your deposit.
-                    </div>
-                    <div className={classes.note}>
-                      The request is confirmed by the owner and now you can deposit.
-                    </div>
+                  <div className={classes.note}>
+                    The request is confirmed by the owner and now you can
+                    deposit.
                   </div>
                 </div>
-              )}
-              {reservation.reservationStatusId === 4 && (
+              </div>
+            )}
+            {reservation.reservationStatusId === 4 && (
+              <div
+                className={classes.status1}
+                style={{
+                  border: "1px solid #d75a64",
+                }}
+              >
                 <div
-                  className={classes.status1}
+                  className={classes.icon}
                   style={{
-                    border: "1px solid #d75a64",
+                    color: "#d75a64",
                   }}
                 >
+                  <IoCloseCircleSharp />
+                </div>
+                <div className={classes.text}>
                   <div
-                    className={classes.icon}
+                    className={classes.notify}
                     style={{
                       color: "#d75a64",
                     }}
                   >
-                    <IoCloseCircleSharp />
+                    The request has been cancelled.
                   </div>
-                  <div className={classes.text}>
-                    <div
-                      className={classes.notify}
-                      style={{
-                        color: "#d75a64",
-                      }}
-                    >
-                      The request has been cancelled.
-                    </div>
-                    <div className={classes.note}>
-                      The request is rejected by the owner or cancelled by you.
-                    </div>
+                  <div className={classes.note}>
+                    The request is rejected by the customer or cancelled by you.
                   </div>
                 </div>
-              )}  
+              </div>
+            )}
           </div>
-          
+
           <div className={classes.btnContainer}>
-            <button className={classes.approvedBtn}>Approve</button>
-            <button className={classes.cancelBtn}>Cancel</button>
+            <button
+              className={classes.approvedBtn}
+              onClick={handleApproveRequest}
+            >
+              <span>
+                <IoCheckmarkCircleSharp />
+              </span>
+              Approve
+            </button>
+            <button className={classes.cancelBtn} onClick={handleCancelRequest}>
+              <span>
+                <IoCloseCircleSharp />
+              </span>
+              Cancel
+            </button>
           </div>
         </div>
         <div className={classes.roomAndMap}>

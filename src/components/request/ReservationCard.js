@@ -202,7 +202,7 @@ const ReservationCard = (props) => {
                   color: "#fece04",
                 }}
               >
-                The request is waiting for your deposit.
+                The request is ready for paying.
               </div>
               <div className={classes.note}>
                 The request is confirmed by the owner and now you can deposit.

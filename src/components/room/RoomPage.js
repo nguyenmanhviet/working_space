@@ -17,7 +17,7 @@ import 'react-notifications/lib/notifications.css';
 const RoomPage = (props) => {
   // NotificationManager.success('Success message', 'Title here');
   // NotificationManager.info('Info message');
-
+  const [landlord, setLandlord] = useState({});
   const [property, setProperty] = useState({});
   const [propertyTypeId, setPropertyTypeId] = useState("");
   const [tabIndex, setTabIndex] = useState(0);
@@ -49,6 +49,11 @@ const RoomPage = (props) => {
           headers: headers,
         }).then((res) => res.json())
         .then((data) => setPropertyTypeId(data.data.propertyTypeName));
+        fetch("http://localhost:8080/api/customer/" + data.data.customerId, {
+          method: "GET",
+          headers: headers,
+        }).then((res) => res.json())
+        .then((data) => setLandlord(data.data));
         setProperty(data.data);
       })
       .catch((err) => console.log(err));
@@ -72,104 +77,17 @@ const RoomPage = (props) => {
       .then((data) => setRooms(data.data))
       .catch((err) => console.log(err));
   }, []);
-  //    console.log(rooms);
-
-  // const rooms = [
-  //   {
-  //     roomId: 1,
-  //     image:
-  //       "https://cdn.roomlessrent.com/listing/02/58/41/b2/025841b2-39c8-4952-bed9-fc71b1c38e40.jpg",
-  //     name: "Phong so 1",
-  //     price: 100,
-  //     description:
-  //       "Phong dep, dien tich thoang, phu hop cho dan lao dong va moi nguoi yeu thich ",
-  //     size: 50,
-  //     capacity: 5,
-  //     status: "available",
-  //   },
-  //   {
-  //     roomId: 2,
-  //     image:
-  //       "https://cdn.roomlessrent.com/listing/ab/88/82/db/ab8882db-b9e8-40d3-a53a-090c1d17b00c.jpg",
-
-  //     name: "Phong so 2",
-  //     price: 100,
-  //     description: "Phong dep, dien tich thoang, phu hop cho dan lao dong",
-  //     size: 50,
-  //     capacity: 5,
-  //     status: "available",
-  //   },
-  //   {
-  //     roomId: 3,
-  //     image:
-  //       "https://cdn.roomlessrent.com/listing/78/a2/8b/eb/78a28beb-0a8a-49d7-a756-9a739eedc34a.jpg",
-
-  //     name: "Phong so 1",
-  //     price: 100,
-  //     description: "Phong dep, dien tich thoang, phu hop cho dan lao dong",
-  //     size: 50,
-  //     capacity: 5,
-  //     status: "available",
-  //   },
-  //   {
-  //     roomId: 4,
-  //     image:
-  //       "https://cdn.roomlessrent.com/listing/ed/82/60/eb/ed8260eb-0549-48be-b63d-afb4849ace4d.jpg",
-
-  //     name: "Phong so 1",
-  //     price: 100,
-  //     size: 50,
-  //     description: "Phong dep, dien tich thoang, phu hop cho dan lao dong",
-  //     capacity: 5,
-  //     status: "available",
-  //   },
-  //   {
-  //     roomId: 5,
-  //     image:
-  //       "https://cdn.roomlessrent.com/listing/5f/17/f8/1d/5f17f81d-d0b9-474b-9373-660e60e5aa04.jpg",
-
-  //     name: "Phong so 1",
-  //     price: 100,
-  //     size: 50,
-  //     capacity: 5,
-  //     description: "Phong dep, dien tich thoang, phu hop cho dan lao dong",
-  //     status: "available",
-  //   },
-  //   {
-  //     roomId: 6,
-  //     image:
-  //       "https://cdn.roomlessrent.com/listing/20/bc/bd/ee/20bcbdee-095c-4269-8c01-a8b5e0bcd954.jpg",
-
-  //     name: "Phong so 1",
-  //     price: 100,
-  //     size: 50,
-  //     description: "Phong dep, dien tich thoang, phu hop cho dan lao dong",
-  //     capacity: 5,
-  //     status: "available",
-  //   },
-  // ];
+ 
 
   const breakPoints = [
     { width: 1, itemsToShow: 1 },
-    // { width: 550, itemsToShow: 2 },
-    // { width: 768, itemsToShow: 3 },
-    // { width: 1200, itemsToShow: 4 },
-  ];
+];
 
-  // const images = [
-  //   "https://cdn.roomlessrent.com/listing/b8/f4/8b/13/b8f48b13-3d18-4b70-ba18-0e1a74f50d31.jpg",
-  //   "https://cdn.roomlessrent.com/listing/b8/f4/8b/13/b8f48b13-3d18-4b70-ba18-0e1a74f50d31.jpg",
-  // ];
-  // const images = property.images;
 
-  // console.log(images);
 
   return (
     <div className={classes.container}>
-      <div>
-        <NotificationContainer/>
-      </div>
-      <div className={classes.container_infor}>
+        <div className={classes.container_infor}>
         <div className={classes.container_left}>
           <Carousel
             className={classes.carousel}
@@ -272,13 +190,13 @@ const RoomPage = (props) => {
                   borderRadius: "50%",
                 }}
               ></div>
-              <h4>Thai Tang Luc</h4>
+              <h4>{landlord.customerName}</h4>
             </div>
             <p>
-              Phone number: <span>0772978470</span>
+              Phone number: <span>{landlord.phoneNumber}</span>
             </p>
             <p>
-              Email: <span>vietdeptrai@gmail.com</span>
+              Email: <span>{landlord.email}</span>
             </p>
           </div>
           <div className={classes.contentMap}>

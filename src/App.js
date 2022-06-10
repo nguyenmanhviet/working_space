@@ -22,7 +22,7 @@ import AccountSetting from './components/account/AccountSetting';
 import ReservationRequest from './components/request/ReservationRequest';
 import MyReservation from './components/request/MyReservation';
 import ReservationDetail from './components/request/ReservationDetail';
-
+import ManageProperty from './components/addListing/ManageProperty';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
@@ -179,7 +179,9 @@ function App() {
         <Route path='/my_account'>
           {authCtx.isLoggedIn && <MyAccount />}
         </Route>
-        
+        <Route path='/manage_property'>
+          {authCtx.isLoggedIn && <ManageProperty />}
+        </Route>
         <Route path='*'>
           <NotFound />
         </Route>

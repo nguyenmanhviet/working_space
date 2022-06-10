@@ -1,7 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
 import { useRef } from "react";
 import { VscAccount } from "react-icons/vsc";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import classes from "./MainNavigation.module.css";
 import AuthContext from "../../store/authContext";
 import { useHistory } from "react-router-dom";
@@ -11,6 +11,24 @@ const MainNavigation = (props) => {
   const authCtx = useContext(AuthContext);
   const login = useRef();
   const toggle = useRef();
+  const [name, setName] = useState('');
+
+  if (authCtx.isLoggedIn) {
+    fetch(
+      `http://localhost:8080/api/customer/${authCtx.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setName(data.data.customerName);
+      })
+      .catch((err) => console.log(err));
+  }
 
   const loginHandler = (event) => {
     event.preventDefault();
@@ -73,9 +91,9 @@ const MainNavigation = (props) => {
           )}
           {authCtx.isLoggedIn && (
             <li>
-              <div className={classes.dropdown}>
-                <button onClick={dropdownHandle} className={classes.dropbtn}>
-                  Welcome, Thai Tang Luc
+              <div className={classes.dropdown} onClick={dropdownHandle}>
+                <button className={classes.dropbtn}>
+                  Welcome, {name}
                 </button>
                 <div
                   ref={toggle}
@@ -85,7 +103,7 @@ const MainNavigation = (props) => {
                 >
                   <NavLink to="/my_account">My Account</NavLink>
                   <NavLink to="/my_account/profile">Account settings</NavLink>
-                  <NavLink to="/">Add listing</NavLink>
+                  <NavLink to="/manage_property">Add listing</NavLink>
                   <a href="#" onClick={logoutHanlde}>
                     Logout
                   </a>

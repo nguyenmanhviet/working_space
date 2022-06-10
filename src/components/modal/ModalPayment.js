@@ -1,16 +1,16 @@
 import ReactDOM from "react-dom";
 import classes from "./ModalPayment.module.css";
 
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import AuthContext from "../../store/authContext";
 import { BsCheckCircle, BsPaypal, BsFillCalendar2CheckFill, BsFillCalendarXFill} from "react-icons/bs";
-// import {NotificationContainer, NotificationManager} from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+
 import Example from "./Notification";
 
 
 const ModalPayment = (props) => {
-
+  const [customer, setCustomer] = useState({});
 
 
   const authCtx = useContext(AuthContext);
@@ -21,6 +21,26 @@ const ModalPayment = (props) => {
     event.preventDefault();
     props.onExitModalPayment();
   };
+
+  useEffect(() => {
+    let headers = new Headers();
+
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+
+    headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
+    headers.append("Access-Control-Allow-Credentials", "true");
+    fetch(`http://localhost:8080/api/customer/${authCtx.id}`, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        
+        setCustomer(data.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleSendRequest = () => {
     fetch("http://localhost:8080/api/reservation", {
@@ -65,7 +85,7 @@ const ModalPayment = (props) => {
             <input
               type="text"
               id="name"
-              value={"Nguyen Manh Viet"}
+              value={customer.customerName}
               disabled={true}
             />
           </div>
@@ -74,7 +94,7 @@ const ModalPayment = (props) => {
             <input
               type="text"
               id="email"
-              value={"thidaihoc29012000@gmail.com"}
+              value={customer.email}
               disabled={true}
             />
           </div>
@@ -83,7 +103,7 @@ const ModalPayment = (props) => {
             <input
               type="text"
               id="phone"
-              value={"0772978470"}
+              value={customer.phoneNumber}
               disabled={true}
             />
           </div>
