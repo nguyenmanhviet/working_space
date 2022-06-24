@@ -105,8 +105,8 @@ const ModalRoom = (props) => {
           </TabPanel>
           <TabPanel>
             <div className={classes.roomUtility}>
-              {props.room.services.map((serviceId) => (
-               <Service serviceId={serviceId}/>
+              {props.room?.services.map((service) => (
+               <Service service={service}/>
               ))}
               
             </div>
