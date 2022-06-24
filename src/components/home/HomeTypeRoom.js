@@ -13,7 +13,7 @@ const HomeTypeRoom = (props) => {
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     
-    headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+    headers.append('Access-Control-Allow-Origin', '*');
     headers.append('Access-Control-Allow-Credentials', 'true')
     fetch("http://localhost:8080/api/property_type/property_types", {
       method: "GET",
