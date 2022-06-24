@@ -105,26 +105,6 @@
   grid-row-gap: 5px !important;
 }
 
-.utility {
-  
-  padding: 5px;
-  text-align: center;
-  
-  
-}
-
-.utility p {
-  margin: 0;
-  font-size: 16px;
-}
-
-.utility p span {
-  font-size: 30px;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-
 .btnContainer{
   margin-top: 15px;
   text-align: right;
