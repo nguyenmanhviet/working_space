@@ -20,7 +20,7 @@ const MainNavigation = (props) => {
 
   if (authCtx.isLoggedIn) {
     fetch(
-      `http://localhost:8080/api/customer/${authCtx.id}`,
+      `http://128.199.166.110:8080/api/customer/${authCtx.id}`,
       {
         method: "GET",
         headers: {

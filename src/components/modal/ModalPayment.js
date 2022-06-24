@@ -30,7 +30,7 @@ const ModalPayment = (props) => {
 
     headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
     headers.append("Access-Control-Allow-Credentials", "true");
-    fetch(`http://localhost:8080/api/customer/${authCtx.id}`, {
+    fetch(`http://128.199.166.110:8080/api/customer/${authCtx.id}`, {
       method: "GET",
       headers: headers,
     })
@@ -43,7 +43,7 @@ const ModalPayment = (props) => {
   }, []);
 
   const handleSendRequest = () => {
-    fetch("http://localhost:8080/api/reservation", {
+    fetch("http://128.199.166.110:8080/api/reservation", {
       method: "POST",
       body: JSON.stringify({
         roomId: props.reservation.roomId,

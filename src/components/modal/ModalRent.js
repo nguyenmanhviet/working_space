@@ -34,15 +34,9 @@ const ModalRent = (props) => {
   const [validDates, setValidDates] = useState([]);
   const [price, setPrice] = useState(0);
 
-  // let startDateRef = useRef();
-  // console.log(startDateRef.current?.props.initialValue.getDate());
 
-  // fetch("http://localhost:8080/api/auth/login")
-  //     .then((res) => {
-  //       return res.json();
-  //     });
   useEffect(() => {
-    fetch("http://localhost:8080/api/reservation/get_invalid_date/" + props.room.roomId)
+    fetch("http://128.199.166.110:8080/api/reservation/get_invalid_date/" + props.room.roomId)
       .then((res) => {
         return res.json();
       })
@@ -59,7 +53,7 @@ const ModalRent = (props) => {
 
     console.log(date);
     fetch(
-      `http://localhost:8080/api/reservation/furthest_valid_date/${props.room.roomId}?from=${date}`
+      `http://128.199.166.110:8080/api/reservation/furthest_valid_date/${props.room.roomId}?from=${date}`
     )
       .then((res) => {
         return res.json();
@@ -79,7 +73,7 @@ const ModalRent = (props) => {
 
     headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
     headers.append("Access-Control-Allow-Credentials", "true");
-    fetch("http://localhost:8080/api/price/" + props.room.priceId, {
+    fetch("http://128.199.166.110:8080/api/price/" + props.room.priceId, {
       method: "GET",
       headers: headers,
     })

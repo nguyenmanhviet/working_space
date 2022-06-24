@@ -8,7 +8,7 @@ const MyProperties = (props) => {
     const authCtx = useContext(AuthContext);
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/properties/getByCustomerId/" + authCtx.id, {
+        fetch("http://128.199.166.110:8080/api/properties/getByCustomerId/" + authCtx.id, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

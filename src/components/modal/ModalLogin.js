@@ -29,7 +29,7 @@ const ModalLogin = (props) => {
 
     console.log(enteredEmail + "cung voi" + enteredPassword);
 
-    fetch("http://localhost:8080/api/auth/login", {
+    fetch("http://128.199.166.110:8080/api/auth/login", {
       method: "POST",
       body: JSON.stringify({
         username: enteredEmail,

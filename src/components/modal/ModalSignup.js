@@ -32,7 +32,7 @@ const ModalSignup = (props) => {
     const enteredNation = nationRef.current.value;
     const enteredPhone = phoneRef.current.value;
 
-    fetch("http://localhost:8080/api/auth/register", {
+    fetch("http://128.199.166.110:8080/api/auth/register", {
       method: "POST",
       body: JSON.stringify({
         username: enteredUsername,

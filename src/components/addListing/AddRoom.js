@@ -43,7 +43,7 @@ const AddRoom = (props) => {
 
   useEffect(() => {
     fetch(
-      "http://localhost:8080/api/properties/getByCustomerId/" + authCtx.id,
+      "http://128.199.166.110:8080/api/properties/getByCustomerId/" + authCtx.id,
       {
         method: "GET",
         headers: {
@@ -59,7 +59,7 @@ const AddRoom = (props) => {
       });
   }, []);
   useEffect(() => {
-    fetch("http://localhost:8080/api/service", {
+    fetch("http://128.199.166.110:8080/api/service", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const AddRoom = (props) => {
       new Blob([JSON.stringify(roomDto)], { 
         type: 'application/json'
       }));
-    const data = fetch('http://localhost:8080/api/rooms', { 
+    const data = fetch('http://128.199.166.110:8080/api/rooms', { 
       method: 'POST',
       body: formData
     })

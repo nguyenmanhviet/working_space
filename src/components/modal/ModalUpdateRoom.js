@@ -19,7 +19,7 @@ const ModalUpdateRoom = (props) => {
   const [isLoading, setLoading] = useState(false);
   const [price, setPrice] = useState({});
   useEffect(() => {
-    fetch("http://localhost:8080/api/price/" + props.room.priceId, {
+    fetch("http://128.199.166.110:8080/api/price/" + props.room.priceId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

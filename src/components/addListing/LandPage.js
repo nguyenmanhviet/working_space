@@ -40,7 +40,7 @@ const LandPage = (props) =>  {
       new Blob([JSON.stringify(propertyDto)], { 
         type: 'application/json'
       }));
-    const data = fetch('http://localhost:8080/api/properties', { 
+    const data = fetch('http://128.199.166.110:8080/api/properties', { 
       method: 'POST',
       body: formData
     })

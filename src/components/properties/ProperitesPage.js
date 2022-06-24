@@ -66,7 +66,7 @@ const PropertiesList = (props) => {
 
   useEffect(() => {
 
-    const url = `http://localhost:8080/api/properties/getByCityTypeName?city=${city ? city : ''}&typeId=${typeId ? typeId : ''}&name=${name ? name : ''}`;
+    const url = `http://128.199.166.110:8080/api/properties/getByCityTypeName?city=${city ? city : ''}&typeId=${typeId ? typeId : ''}&name=${name ? name : ''}`;
     console.log(url);
     let headers = new Headers();
     
