@@ -234,10 +234,10 @@ function App() {
            <AccountSetting />
         </Route>
         <Route path='/request' exact>
-           <RequestRent />
+          {authCtx.isLoggedIn && <RequestRent /> }
         </Route>
         <Route path='/request/:reservationId/reservation'>
-          <ReservationRequest/>
+          {authCtx.isLoggedIn && <ReservationRequest/> }
         </Route>
         <Route path='/reservation' exact>
          {authCtx.isLoggedIn && <MyReservation  onActiveModalReview={onActiveModalReview}/>}
