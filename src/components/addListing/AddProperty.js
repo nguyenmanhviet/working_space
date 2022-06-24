@@ -6,18 +6,9 @@ import {
   IoCameraOutline,
   IoLocationOutline,
 } from "react-icons/io5";
-import { GiMoneyStack } from "react-icons/gi";
-import LoadingSpinner from "../UI/LoadingSpinner";
-// import { NotificationContainer } from "react-notifications";
 
-// const convertDateToString = (date) => {
-//   const dateObj = new Date(date);
-//     const month = dateObj.getUTCMonth() + 1; //months from 1-12
-//     const day = dateObj.getUTCDate();
-//     const year = dateObj.getUTCFullYear();
-//     const rs = year + "-" + month + "-" + day;
-//     return rs;
-// }
+import LoadingSpinner from "../UI/LoadingSpinner";
+
 
 
 const AddProperty = (props) => {

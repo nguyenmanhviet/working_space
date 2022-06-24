@@ -10,6 +10,7 @@ import {
   IoIosBed,
   IoIosCalendar,
 } from "react-icons/io";
+import Service from './Service';
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { Carousel } from "react-bootstrap";
 import "react-tabs/style/react-tabs.css";
@@ -104,54 +105,10 @@ const ModalRoom = (props) => {
           </TabPanel>
           <TabPanel>
             <div className={classes.roomUtility}>
-              <div className={classes.utility}>
-                <p>
-                  <span>
-                    <IoIosDesktop />
-                  </span>{" "}
-                  Desk{" "}
-                </p>
-              </div>
-              <div className={classes.utility}>
-                <p>
-                  <span>
-                    <IoIosDesktop />
-                  </span>{" "}
-                  Desk{" "}
-                </p>
-              </div>
-              <div className={classes.utility}>
-                <p>
-                  <span>
-                    <IoIosDesktop />
-                  </span>{" "}
-                  Desk{" "}
-                </p>
-              </div>
-              <div className={classes.utility}>
-                <p>
-                  <span>
-                    <IoIosDesktop />
-                  </span>{" "}
-                  Desk{" "}
-                </p>
-              </div>
-              <div className={classes.utility}>
-                <p>
-                  <span>
-                    <IoIosDesktop />
-                  </span>{" "}
-                  Desk{" "}
-                </p>
-              </div>
-              <div className={classes.utility}>
-                <p>
-                  <span>
-                    <IoIosDesktop />
-                  </span>{" "}
-                  Desk{" "}
-                </p>
-              </div>
+              {props.room.services.map((serviceId) => (
+               <Service serviceId={serviceId}/>
+              ))}
+              
             </div>
           </TabPanel>
         </Tabs>

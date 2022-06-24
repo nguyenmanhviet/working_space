@@ -6,8 +6,6 @@ import {
   IoLocationOutline,
   IoBusinessOutline,
 } from "react-icons/io5";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWifi } from "@fortawesome/free-solid-svg-icons";
 import { VscSettingsGear } from "react-icons/vsc";
 import { GiMoneyStack } from "react-icons/gi";
 import AuthContext from "../../store/authContext";
@@ -147,7 +145,6 @@ const AddRoom = (props) => {
           <div className={classes.personInfo}>
             <h3>
               <span>
-                {/* <FontAwesomeIcon icon={icons["faWifi"]} /> */}
                 <IoInformationCircleOutline />
               </span>
               General room information
