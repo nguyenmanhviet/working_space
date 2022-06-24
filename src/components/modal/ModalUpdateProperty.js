@@ -1,5 +1,6 @@
-import classes from "./AddProperty.module.css";
-import { useState, useEffect, useContext, useRef } from "react";
+import classes from "./ModalUpdateProperty.module.css";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import ReactDOM from "react-dom";
 import AuthContext from "../../store/authContext";
 import {
   IoInformationCircleOutline,
@@ -7,31 +8,23 @@ import {
   IoLocationOutline,
 } from "react-icons/io5";
 import { GiMoneyStack } from "react-icons/gi";
+import { useHistory } from "react-router-dom";
 import LoadingSpinner from "../UI/LoadingSpinner";
-// import { NotificationContainer } from "react-notifications";
 
-// const convertDateToString = (date) => {
-//   const dateObj = new Date(date);
-//     const month = dateObj.getUTCMonth() + 1; //months from 1-12
-//     const day = dateObj.getUTCDate();
-//     const year = dateObj.getUTCFullYear();
-//     const rs = year + "-" + month + "-" + day;
-//     return rs;
-// }
-
-
-const AddProperty = (props) => {
+const ModalUpdateProperty = (props) => {
+  const history = useHistory();
   const [types, setType] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [selectedPropertyTypeId, setSelectedPropertyTypeId] = useState();
+  const [quantityRoom, setQuantityRoom] = useState(0);
+  const [selectedPropertyTypeId, setSelectedPropertyTypeId] = useState(props.property.propertyTypeId);
   const propertyNameRef = useRef();
   const propertyDescriptionRef = useRef();
   const propertyAddressRef = useRef();
   const propertyCityRef = useRef();
   // const propertyTypeIdRef = useRef();
 
-  let formData = new FormData(); 
-  
+  let formData = new FormData();
+
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
@@ -42,7 +35,7 @@ const AddProperty = (props) => {
 
     headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
     headers.append("Access-Control-Allow-Credentials", "true");
-    
+
     fetch("http://localhost:8080/api/property_type/property_types", {
       method: "GET",
       headers: headers,
@@ -52,13 +45,24 @@ const AddProperty = (props) => {
         setType(data.data);
       })
       .catch((err) => console.log(err));
+    
+      fetch(`http://localhost:8080/api/properties/${props.property.propertyId}/rooms`, {
+        method: "GET",
+        headers: headers,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setQuantityRoom(data.data.length);
+        })
+        .catch((err) => console.log(err));
+
+      
   }, []);
 
-  
   const uploadJSONFiles = (event) => {
     event.preventDefault();
-    formData.append('files', event.target.files[0]);
-  }
+    formData.append("files", event.target.files[0]);
+  };
 
   const radioHandler = (event) => {
     setSelectedPropertyTypeId(event.target.value);
@@ -66,6 +70,7 @@ const AddProperty = (props) => {
 
   const submitHandle = (event) => {
     setLoading(true);
+    
     event.preventDefault();
     const propertyDto = {
       customerId: authCtx.id,
@@ -73,33 +78,48 @@ const AddProperty = (props) => {
       propertyName: propertyNameRef.current.value,
       address: propertyAddressRef.current.value,
       city: propertyCityRef.current.value,
-      roomQuantity: 0,
+      roomQuantity: quantityRoom,
       createDate: "2000-07-01T00:00:00",
       description: propertyDescriptionRef.current.value,
       rating: null,
       lat: 127.0,
       lon: 182.0,
-      images: []
-    }
+      images: [],
+    };
     // formData.append('propertyDto', JSON.stringify(propertyDto));
-    formData.append('propertyDto',
-      new Blob([JSON.stringify(propertyDto)], { 
-        type: 'application/json'
-      }));
-    const data = fetch('http://localhost:8080/api/properties', { 
-      method: 'POST',
-      body: formData
+    console.log(propertyDto);
+    formData.append(
+      "propertyDto",
+      new Blob([JSON.stringify(propertyDto)], {
+        type: "application/json",
+      })
+    );
+    const data = fetch(`http://localhost:8080/api/properties/${props.property.propertyId}`, {
+      method: "PUT",
+      body: formData,
     })
-    .then(response => response.json())
-    .then(result => {
-      setLoading(false);
-      props.handleNotification("property");
-    })
-    .catch(error => console.log('error occurred!'));
+      .then((response) => response.json())
+      .then((result) => {
+        // console.log(result);
+        setLoading(false);
+        props.updateSuccess();
+        props.onExitModalUpdateProperty();
+      })
+      .catch((error) => console.log("error occurred!", error));
   };
 
-  return (
-    <div>
+  const handleExitModal = (event) => {
+    event.preventDefault();
+    props.onExitModalUpdateProperty();
+  };
+
+  return ReactDOM.createPortal(
+    <div className={classes.modal}>
+      <header className={classes.modal__header}>
+        <a href="#" onClick={handleExitModal} className={classes.close} />
+        <h3>{props.property?.propertyName}</h3>
+      </header>
+      <div>
       {/* <LoadingSpinner /> */}
       {/* <NotificationContainer /> */}
       <form onSubmit={submitHandle}>
@@ -109,13 +129,13 @@ const AddProperty = (props) => {
               <span>
                 <IoInformationCircleOutline />
               </span>
-              General property information
+             Property information
             </h3>
             <hr></hr>
             {/*  */}
             <div className={classes.control}>
               <label for="name">
-                Enter the name <span>*</span>
+                Name: <span>*</span>
               </label>
               <input
                 ref={propertyNameRef}
@@ -123,11 +143,12 @@ const AddProperty = (props) => {
                 name="name"
                 className={classes.inputName}
                 placeholder="Name"
+                defaultValue={props.property.propertyName}
               />
             </div>
             <div className={classes.control}>
               <label for="price">
-                What kind of house is it ? <span>*</span>
+                Kind of the house: <span>*</span>
               </label>
               {types.map((type) => (
                 <>
@@ -141,6 +162,7 @@ const AddProperty = (props) => {
                       margin: "0px 15px",
                     }}
                     onChange={radioHandler}
+                    checked={type.propertyTypeId === props.property.propertyTypeId ? true : false}
                   />
                   {type.propertyTypeName}
                 </>
@@ -148,7 +170,7 @@ const AddProperty = (props) => {
             </div>
             <div className={classes.control}>
               <label for="firstname">
-                Enter the description <span>*</span>
+                The description <span>*</span>
               </label>
               <textarea
                 ref={propertyDescriptionRef}
@@ -156,6 +178,7 @@ const AddProperty = (props) => {
                 rows={5}
                 cols={100}
                 placeholder="Enter the description"
+                defaultValue={props.property.description}
               ></textarea>
             </div>
           </div>
@@ -172,10 +195,24 @@ const AddProperty = (props) => {
             </h3>
             <hr></hr>
             {/*  */}
-
+            <div className={classes.control}>
+              <label for="name">
+                Images: <span>*</span>
+              </label>
+              {props.property?.images.map((image) => (
+                 <input
+                 type="text"
+                 name="image"
+                 className={classes.inputName}
+                 placeholder="Image"
+                 defaultValue={image.url}
+               />
+              ))}
+              
+            </div>
             <div className={classes.control}>
               <label for="size">
-                Enter at least one photo <span>*</span>
+                Add more images <span>*</span>
               </label>
               <input type="file" name="image" className={classes.image} 
               onChange={(event) => uploadJSONFiles(event)} 
@@ -203,7 +240,7 @@ const AddProperty = (props) => {
 
             <div className={classes.control}>
               <label for="address">
-                Enter full address <span>*</span>
+                Full address <span>*</span>
               </label>
               <input
                 ref={propertyAddressRef}
@@ -211,6 +248,7 @@ const AddProperty = (props) => {
                 name="address"
                 placeholder="Enter address"
                 className={classes.inputName}
+                defaultValue={props.property.address}
               />
             </div>
             <div className={classes.control}>
@@ -223,6 +261,7 @@ const AddProperty = (props) => {
                 name="city"
                 placeholder="Enter city"
                 // className={classes.inputName}
+                defaultValue={props.property.city}
               />
             </div>
           </div>
@@ -230,12 +269,14 @@ const AddProperty = (props) => {
         {isLoading && <LoadingSpinner />}
         <div className={classes.btnContainer}>
           <button type="submit" className={classes.btnRent}>
-            Create Property
+            Save
           </button>
         </div>
       </form>
     </div>
+    </div>,
+    document.getElementById("modal-root")
   );
 };
 
-export default AddProperty;
+export default ModalUpdateProperty;

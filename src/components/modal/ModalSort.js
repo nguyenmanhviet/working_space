@@ -17,7 +17,6 @@ const ModalSort = (props) => {
       </div>
       <div className={classes.container}>
         <button>Ordine</button>
-        <button>Cheaper first</button>
         <button>Sort by name</button>
         <button>Newest first</button>
       </div>

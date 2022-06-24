@@ -1,23 +1,67 @@
 import classes from "./AddRoom.module.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import {
   IoInformationCircleOutline,
   IoCameraOutline,
   IoLocationOutline,
-  IoBusinessOutline
+  IoBusinessOutline,
 } from "react-icons/io5";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWifi } from "@fortawesome/free-solid-svg-icons";
 import { VscSettingsGear } from "react-icons/vsc";
 import { GiMoneyStack } from "react-icons/gi";
 import AuthContext from "../../store/authContext";
+import LoadingSpinner from "../UI/LoadingSpinner";
+import { icons } from "../../lib/icon";
+
+var pickedServices = [];
+
+function removeItemOnce(services, value) {
+  const filteredServices = services.filter((service) => {
+       return service.serviceId !== value.serviceId;
+  })
+  return filteredServices;
+}
 
 const AddRoom = (props) => {
   const [services, setService] = useState([]);
+  // const [pickedService, setPickedService] = useState([]);
   const [properties, setProperty] = useState([]);
+  const [isLoading, setLoading] = useState(false);
   const authCtx = useContext(AuthContext);
-  console.log(authCtx.id)
-  
+  const nameInputRef = useRef();
+  const sizeInputRef = useRef();
+  const capacityInputRef = useRef();
+  const descriptionInputRef = useRef();
+  const propertyRef = useRef();
+  const hourlyRef = useRef();
+  const dailyRef = useRef();
+  const weeklyRef = useRef();
+  const monthRef = useRef();
+  const depositRef = useRef();
+
+  let formData = new FormData();
+  // console.log(icons["faWifi"] === faWifi);
+
   useEffect(() => {
-    fetch("http://localhost:8080/api/properties/getByCustomerId/" + authCtx.id, {
+    fetch(
+      "http://localhost:8080/api/properties/getByCustomerId/" + authCtx.id,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setProperty(data.data);
+      });
+  }, []);
+  useEffect(() => {
+    fetch("http://localhost:8080/api/service", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,15 +71,73 @@ const AddRoom = (props) => {
         return res.json();
       })
       .then((data) => {
-        setProperty(data.data);
+        setService(data.data);
       });
-  }, [])
-  
-  console.log(properties);
-   
-  const submitHandle = (event) => {
+  }, []);
+
+  const handlePickProperty = (event) => {
+    //  console.log(event.target.value);
+     
+  }
+
+
+  const hanldePickService = (event) => {
+    if (event.target.checked) {
+      pickedServices.push({
+        serviceId: +event.target.id,
+        serviceName: event.target.name,
+        icon: event.target.value,
+      });
+    } else {
+      pickedServices = removeItemOnce(pickedServices, {
+        serviceId: +event.target.id,
+        serviceName: event.target.name,
+        icon: event.target.value,
+      })
+    }
+  };
+
+  const uploadJSONFiles = (event) => {
     event.preventDefault();
-    // console.log("submid ne");
+    formData.append("files", event.target.files[0]);
+  };
+
+  const submitHandle = (event) => {
+    setLoading(true);
+    event.preventDefault();
+    const roomDto = {
+      propertyId: +propertyRef.current.value,
+      price: {
+        hourPrice: +hourlyRef.current.value,
+        dayPrice: +dailyRef.current.value,
+        weekPrice: +weeklyRef.current.value,
+        monthPrice: +monthRef.current.value
+      },
+      roomStatusId: 2,
+      roomName: nameInputRef.current.value,
+      size: sizeInputRef.current.value,
+      capacity: capacityInputRef.current.value,
+      description: descriptionInputRef.current.value,
+      bedrooms: 1,
+      images: [],
+      services: pickedServices,
+    }
+    console.log(roomDto);
+    // formData.append('propertyDto', JSON.stringify(propertyDto));
+    formData.append('roomWithPriceDto',
+      new Blob([JSON.stringify(roomDto)], { 
+        type: 'application/json'
+      }));
+    const data = fetch('http://localhost:8080/api/rooms', { 
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(result => {
+      setLoading(false);
+      props.handleNotification("room");
+    })
+    .catch(error => console.log('error occurred!', error));
   };
 
   return (
@@ -45,6 +147,7 @@ const AddRoom = (props) => {
           <div className={classes.personInfo}>
             <h3>
               <span>
+                {/* <FontAwesomeIcon icon={icons["faWifi"]} /> */}
                 <IoInformationCircleOutline />
               </span>
               General room information
@@ -56,6 +159,7 @@ const AddRoom = (props) => {
                 Enter the name <span>*</span>
               </label>
               <input
+                ref={nameInputRef}
                 type="text"
                 name="name"
                 className={classes.inputName}
@@ -64,21 +168,33 @@ const AddRoom = (props) => {
             </div>
             <div className={classes.control}>
               <label for="size">
+                <i class="bi bi-archive"></i>
                 How big is it? <span>*</span> (m<sup>2</sup>)
               </label>
-              <input type="text" name="size" placeholder="Enter size" />
+              <input
+                ref={sizeInputRef}
+                type="text"
+                name="size"
+                placeholder="Enter size"
+              />
             </div>
             <div className={classes.control}>
               <label for="capacity">
                 How many people can live in the house in total? <span>*</span>
               </label>
-              <input type="text" name="capacity" placeholder="Enter capacity" />
+              <input
+                ref={capacityInputRef}
+                type="text"
+                name="capacity"
+                placeholder="Enter capacity"
+              />
             </div>
             <div className={classes.control}>
               <label for="firstname">
                 Enter the description <span>*</span>
               </label>
               <textarea
+                ref={descriptionInputRef}
                 name="description"
                 rows={5}
                 cols={100}
@@ -100,9 +216,38 @@ const AddRoom = (props) => {
             {/*  */}
             <div className={classes.control}>
               <label for="price">
-                At what daily price do you want to rent it <span>*</span> (VNĐ)
+                At what price do you want to rent it <span>*</span> (VNĐ)
               </label>
-              <input type="text" name="price" placeholder="Enter price" />
+              <input
+                ref={hourlyRef}
+                type="text"
+                name="price"
+                placeholder="Hourly price"
+              />
+            </div>
+            <div className={classes.control}>
+              <input
+                ref={dailyRef}
+                type="text"
+                name="price"
+                placeholder="Daily price"
+              />
+            </div>
+            <div className={classes.control}>
+              <input
+                ref={weeklyRef}
+                type="text"
+                name="price"
+                placeholder="Weekly price"
+              />
+            </div>
+            <div className={classes.control}>
+              <input
+                ref={monthRef}
+                type="text"
+                name="price"
+                placeholder="Monthly price"
+              />
             </div>
             <div className={classes.control}>
               <label for="price">Does the price include all utilities ?</label>
@@ -131,7 +276,12 @@ const AddRoom = (props) => {
               <label for="deposit">
                 How much is the deposit <span>*</span> (VNĐ)
               </label>
-              <input type="text" name="deposit" placeholder="Enter deposit" />
+              <input
+                ref={depositRef}
+                type="text"
+                name="deposit"
+                placeholder="Enter deposit"
+              />
             </div>
           </div>
         </div>
@@ -157,7 +307,10 @@ const AddRoom = (props) => {
                       margin: "15px 15px",
                       // padding: "8px",
                     }}
-                    value={service.serviceId}
+                    onClick={hanldePickService}
+                    id={service.serviceId}
+                    name={service.serviceName}
+                    value={service.icon}
                   />{" "}
                   {service.serviceName}
                 </div>
@@ -179,19 +332,19 @@ const AddRoom = (props) => {
               <label for="property">
                 Choose the property of this room <span>*</span>
               </label>
-              <select name="property" id="property">
+              <select 
+              ref={propertyRef}
+              onChange={handlePickProperty}
+              name="property" id="property">
                 {properties.map((property) => (
-                  <option value={property.propertyId}>{property.propertyName}</option>
+                  <option value={property.propertyId}>
+                    {property.propertyName}
+                  </option>
                 ))}
-                
               </select>
             </div>
           </div>
         </div>
-
-
-
-
 
         <div className={classes.content}>
           <div className={classes.personInfo}>
@@ -208,7 +361,13 @@ const AddRoom = (props) => {
               <label for="size">
                 Enter at least one photo <span>*</span>
               </label>
-              <input type="file" name="image" className={classes.image} />
+              <input
+                type="file"
+                name="image"
+                className={classes.image}
+                onChange={(event) => uploadJSONFiles(event)}
+                multiple
+              />
             </div>
             <div className={classes.control}>
               <p>
@@ -218,8 +377,7 @@ const AddRoom = (props) => {
             </div>
           </div>
         </div>
-
-        
+        {isLoading && <LoadingSpinner />}
         <div className={classes.btnContainer}>
           <button type="submit" className={classes.btnRent}>
             Create Room

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/authContext";
 
@@ -15,8 +15,31 @@ import {
 } from "react-icons/io";
 
 const MyAccount = (props) => {
+  const [client, setClient] = useState({});
   const history = useHistory();
   const authCtx = useContext(AuthContext);
+
+  document.title = "Accout | Roomless";
+
+
+  useEffect(() => {
+    let headers = new Headers();
+
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+
+    headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
+    headers.append("Access-Control-Allow-Credentials", "true");
+    fetch("http://localhost:8080/api/customer/" + authCtx.id, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((res) => res.json())
+      .then((rs2) => {
+        setClient(rs2.data);
+      });
+  }, []);
+  
 
   const logoutHanlde = () => {
     authCtx.logout();
@@ -27,13 +50,13 @@ const MyAccount = (props) => {
     <div className={classes.container}>
       <div className={classes.left}>
         <div className={classes.info}>
-          <h2>Hello, Nguyen Manh Viet</h2>
+          <h2>Hello, {client.customerName}</h2>
           <span>Tenant</span> / <span>Landlord</span>
           <p>
-            <b>Email:</b> <span>thidaihoc29012000@gmail.com</span>
+            <b>Email:</b> <span>{client.email}</span>
           </p>
           <p>
-            <b>Phone number:</b> <span>0772978470</span>
+            <b>Phone number:</b> <span>{client.phoneNumber}</span>
           </p>
           <NavLink to="/">
             <IoIosSettings /> Account settings

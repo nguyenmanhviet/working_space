@@ -12,7 +12,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useParams } from "react-router-dom";
 import classes from "./ReservationDetail.module.css";
 import RoomCard from "./RoomCard";
-import PropertyCard from "./PropertyCard";
+// import PropertyCard from "./PropertyCard";
 import Map from "../properties/Map";
 import {
   NotificationContainer,
@@ -27,6 +27,8 @@ const ReservationDetail = (props) => {
   const [property, setProperty] = useState({});
   const params = useParams();
   const { reservationId } = params;
+
+  document.title = "Detail reservation | Roomless";
 
   const handleCancelRequest = () => {
     fetch(

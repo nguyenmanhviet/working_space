@@ -14,8 +14,9 @@ import ReservationDiv from "./ReservationDiv";
 const RequestRent = (props) => {
   const authCtx = useContext(AuthContext);
   const [reservations, setReservation] = useState([]);
-  const [room, setRoom] = useState({});
-  const images = [];
+  
+  document.title = "Requests | Roomless";
+  
   useEffect(() => {
     let headers = new Headers();
 
@@ -82,6 +83,11 @@ const RequestRent = (props) => {
           </div>
         </div>
         <div className={classes.containerRequests}>
+          {reservations.length == 0 && (
+            <div>
+              <h3>You don't have any request information.</h3>
+            </div>
+          )}
           {reservations.map((reservation) => (
             <NavLink
               className={classes.linkReservation}

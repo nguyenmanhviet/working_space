@@ -27,8 +27,8 @@ const convertDateToString = (date) => {
 const ModalRent = (props) => {
   const authCtx = useContext(AuthContext);
   const iconArrow = "IoIosArrowRoundForward";
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [limitDate, setLimitDate] = useState(new Date());
   const [quantityDays, setQuantityDays] = useState(1);
   const [validDates, setValidDates] = useState([]);
@@ -42,7 +42,7 @@ const ModalRent = (props) => {
   //       return res.json();
   //     });
   useEffect(() => {
-    fetch("http://localhost:8080/api/reservation/get_invalid_date/1")
+    fetch("http://localhost:8080/api/reservation/get_invalid_date/" + props.room.roomId)
       .then((res) => {
         return res.json();
       })
@@ -52,14 +52,14 @@ const ModalRent = (props) => {
   }, [validDates]);
 
   const disableCustomDt = (current) => {
-    return !validDates.includes(current.format("YYYY-MM-DD"));
+    return !validDates.includes(current.format("YYYY-MM-DD")) && (new Date(current) > new Date());
   };
   useEffect(() => {
     const date = convertDateToString(startDate);
 
     console.log(date);
     fetch(
-      "http://localhost:8080/api/reservation/furthest_valid_date/1?from=" + date
+      `http://localhost:8080/api/reservation/furthest_valid_date/${props.room.roomId}?from=${date}`
     )
       .then((res) => {
         return res.json();
@@ -94,13 +94,15 @@ const ModalRent = (props) => {
   const disableEndDate = (current) => {
     return (
       new Date(current) <= new Date(limitDate) &&
-      new Date(current) >= new Date(startDate)
+      new Date(current) >= new Date(startDate) &&
+      new Date(current) >= new Date() && 
+      startDate != null
     );
   };
 
   const onActiveModalPayment = () => {
     const reservation = {
-      roomId: props.room.priceId,
+      roomId: props.room.roomId,
       customerId: authCtx.id,
       createDate: convertDateToString(new Date()),
       startDate: convertDateToString(startDate),

@@ -7,6 +7,8 @@ import classes from "./AccountSetting.module.css";
 const AccountSetting = (props) => {
   const [index, setIndex] = useState(1);
 
+  document.title = "Management account | Roomless";
+
   return (
     <div className={classes.container}>
       <div className={classes.nav}>

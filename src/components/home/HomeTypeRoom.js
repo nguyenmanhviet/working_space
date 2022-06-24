@@ -50,7 +50,7 @@ const HomeTypeRoom = (props) => {
       </div>
       <Carousel breakPoints={breakPoints} enableAutoPlay pagination={false}>
         {items.map((item) => (
-          <NavLink to="/" className={classes.item} key={item.id}>
+          <NavLink to={"/properties?typeId=" + item.propertyTypeId} target={"_blank"} className={classes.item} key={item.id}>
             <Item key={item.propertyTypeId} image={item.images} name={item.propertyTypeName}>
               {/* {item.title} */}
             </Item>{" "}

@@ -44,6 +44,8 @@ const ReservationRequest = (props) => {
   const [customer, setCustomer] = useState({});
   const [propertyType, setPropertyType] = useState("");
 
+  document.title = "Rental Request | Roomless";
+
   const handleApproveRequest = () => {
     fetch(
       `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=3`,

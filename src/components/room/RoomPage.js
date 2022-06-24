@@ -10,7 +10,7 @@ import "react-tabs/style/react-tabs.css";
 import ListReview from "./ListReview";
 import Carousel from "react-elastic-carousel";
 import { useParams } from "react-router-dom";
-import './RoomPage.css';
+
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
@@ -27,7 +27,7 @@ const RoomPage = (props) => {
   const params = useParams();
 
   const { propertyId } = params;
-  console.log(propertyId);
+ 
 
   useEffect(() => {
     let headers = new Headers();
@@ -55,6 +55,7 @@ const RoomPage = (props) => {
         }).then((res) => res.json())
         .then((data) => setLandlord(data.data));
         setProperty(data.data);
+        document.title = `${data.data.propertyName} | Roomless`
       })
       .catch((err) => console.log(err));
   }, []);

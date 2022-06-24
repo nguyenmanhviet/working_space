@@ -137,7 +137,7 @@ const City = (props) => {
 
       <div className={classes.cityContainer}>
         {cities.map((city) => (
-          <NavLink to="/">
+          <NavLink to={"/properties?city=" + city.name} target={"_blank"}>
             <div key={city.id} className={classes.singleCity}>
               <div
                 key={city.id}

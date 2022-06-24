@@ -20,60 +20,18 @@ const ListReview = (props) => {
 
     headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
     headers.append("Access-Control-Allow-Credentials", "true");
-    fetch(`localhost:8080/api/properties/${propertyId}/reviews`, {
+    fetch(`http://localhost:8080/api/properties/${propertyId}/reviews`, {
       method: "GET",
       headers: headers,
     })
       .then((res) => res.json())
       .then((data) => {
         setReviews(data.data);
+        console.log("alo alo",data.data)
       })
       .catch((err) => console.log(err));
   }, []);
-
-  // let reviews = [
-  //     {image: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg',
-  //      name: 'Tran Van Tri',
-  //      rating: 5,
-  //      time: 'a month ago',
-  //      comment: 'Phong nay rat dep, o rat suong, minh cam thay that tuyet voi khi thue phong o day, o day co rat nhieu co gai dep va rat xinh xan va de thuong',},
-  //      {image: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg',
-  //      name: 'Tran Van Tri',
-  //      rating: 5,
-  //      time: 'a month ago',
-  //      comment: 'Phong nay rat dep, o rat suong, minh cam thay that tuyet voi khi thue phong o day, o day co rat nhieu co gai dep va rat xinh xan va de thuong',},
-  //      {image: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg',
-  //      name: 'Tran Van Tri',
-  //      rating: 5,
-  //      time: 'a month ago',
-  //      comment: 'Phong nay rat dep, o rat suong, minh cam thay that tuyet voi khi thue phong o day, o day co rat nhieu co gai dep va rat xinh xan va de thuong',},
-  //      {image: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg',
-  //      name: 'Tran Van Tri',
-  //      rating: 5,
-  //      time: 'a month ago',
-  //      comment: 'Phong nay rat dep, o rat suong, minh cam thay that tuyet voi khi thue phong o day, o day co rat nhieu co gai dep va rat xinh xan va de thuong',},
-  //      {image: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg',
-  //      name: 'Tran Van Tri',
-  //      rating: 5,
-  //      time: 'a month ago',
-  //      comment: 'Phong nay rat dep, o rat suong, minh cam thay that tuyet voi khi thue phong o day, o day co rat nhieu co gai dep va rat xinh xan va de thuong',},
-  //      {image: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg',
-  //      name: 'Tran Van Tri',
-  //      rating: 5,
-  //      time: 'a month ago',
-  //      comment: 'Phong nay rat dep, o rat suong, minh cam thay that tuyet voi khi thue phong o day, o day co rat nhieu co gai dep va rat xinh xan va de thuong',},
-  //      {image: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg',
-  //      name: 'Tran Van Tri',
-  //      rating: 5,
-  //      time: 'a month ago',
-  //      comment: 'Phong nay rat dep, o rat suong, minh cam thay that tuyet voi khi thue phong o day, o day co rat nhieu co gai dep va rat xinh xan va de thuong',},
-  //      {image: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-vector-users-icon-png-image_4144740.jpg',
-  //      name: 'Tran Van Tri',
-  //      rating: 5,
-  //      time: 'a month ago',
-  //      comment: 'Phong nay rat dep, o rat suong, minh cam thay that tuyet voi khi thue phong o day, o day co rat nhieu co gai dep va rat xinh xan va de thuong',},
-
-  // ];
+  
   const getMoreReview = () => {
     setTotalReview((prev) => prev + 3);
   };

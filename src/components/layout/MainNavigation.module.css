@@ -108,3 +108,10 @@
 .show {
   display: block;
 }
+
+.active {
+  color: #44ac44;
+  background-color: rgb(245, 238, 238);
+  border-bottom: 2px solid #dae0e6;
+  transition: 300ms;
+}

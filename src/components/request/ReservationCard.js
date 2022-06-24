@@ -5,8 +5,10 @@ import {
   IoCheckmarkCircleSharp,
   IoWalletSharp,
   IoCloseCircleSharp,
+  IoChatbubbleOutline,
+  IoDocumentsOutline,
 } from "react-icons/io5";
-
+import { NavLink } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { Carousel } from "react-bootstrap";
 import { BsFillCalendar2CheckFill, BsFillCalendarXFill } from "react-icons/bs";
@@ -14,6 +16,7 @@ import { IoIosPerson, IoMdPhonePortrait } from "react-icons/io";
 
 const ReservationCard = (props) => {
   const [room, setRoom] = useState({});
+  const [customer, setCustomer] = useState({});
   const [landLord, setLandLord] = useState({});
 
   useEffect(() => {
@@ -49,11 +52,34 @@ const ReservationCard = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        fetch("http://localhost:8080/api/properties/" + data.data.propertyId, {
+          method: "GET",
+          headers: headers,
+        })
+          .then((res) => res.json())
+          .then((rs) => {
+            fetch("http://localhost:8080/api/customer/" + rs.data.customerId, {
+              method: "GET",
+              headers: headers,
+            })
+              .then((res) => res.json())
+              .then((rs2) => {
+                setCustomer(rs2.data);
+              });
+          });
         setRoom(data.data);
       })
 
       .catch((err) => console.log(err));
   }, []);
+
+  const handleReview = () => {
+    if (props.reservation.reservationStatusId !== 2) {
+      props.handleNotification();
+    } else {
+      props.onActiveModalReview(room);
+    }
+  };
 
   return (
     <li class={classes.tableRow}>
@@ -81,7 +107,7 @@ const ReservationCard = (props) => {
               {" "}
               <IoIosPerson />
             </span>{" "}
-            Thai Tang Luc
+            {customer.customerName}
           </p>
         </div>
         <div className={classes.infoCus}>
@@ -90,7 +116,7 @@ const ReservationCard = (props) => {
               {" "}
               <IoMdPhonePortrait />{" "}
             </span>{" "}
-            0772974870
+            {customer.phoneNumber}
           </p>
         </div>
         <div className={classes.infoCus}>
@@ -99,7 +125,7 @@ const ReservationCard = (props) => {
               {" "}
               <HiOutlineMail />{" "}
             </span>{" "}
-            thidaihoc29012000@gmail.com
+            {customer.email}
           </p>
         </div>
       </div>
@@ -240,6 +266,28 @@ const ReservationCard = (props) => {
             </div>
           </div>
         )}
+      </div>
+      <div class={classes.col6}>
+        <div className={classes.btn}>
+          <button onClick={handleReview}>
+            <IoChatbubbleOutline />
+          </button>
+        </div>
+      </div>
+
+      <div class={classes.col7}>
+        <div className={classes.btn}>
+          <NavLink
+            to={{
+              pathname: `/reservation/${props.reservation.reservationId}`,
+            }}
+            target={"_blank"}
+          >
+            <button>
+              <IoDocumentsOutline />
+            </button>
+          </NavLink>
+        </div>
       </div>
     </li>
   );

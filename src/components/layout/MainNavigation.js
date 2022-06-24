@@ -4,7 +4,8 @@ import { VscAccount } from "react-icons/vsc";
 import { useContext, useState } from "react";
 import classes from "./MainNavigation.module.css";
 import AuthContext from "../../store/authContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+
 
 const MainNavigation = (props) => {
   const history = useHistory();
@@ -12,6 +13,10 @@ const MainNavigation = (props) => {
   const login = useRef();
   const toggle = useRef();
   const [name, setName] = useState('');
+
+  const search = useLocation();
+ 
+  
 
   if (authCtx.isLoggedIn) {
     fetch(
@@ -62,23 +67,23 @@ const MainNavigation = (props) => {
       </div>
       <nav className={classes.nav}>
         <ul>
-          <li>
-            <NavLink to="/request" activeClassName={classes.active}>
+          <li className={search.pathname.includes('request')? classes.active : null}>
+            <NavLink to="/request" >
               Request
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/properties" activeClassName={classes.active}>
+          <li className={search.pathname.includes('properties') ? classes.active : null}>
+            <NavLink to="/properties" >
               Properties for rent
             </NavLink>
           </li>
-          <li>
+          <li className={(search.pathname.includes('reservation') && !search.pathname.includes('reservation')) ? classes.active : null}>
             <NavLink to="/reservation" activeClassName={classes.active}>
               My reservation
             </NavLink>
           </li>
           <li>
-            <NavLink to="/quotes" activeClassName={classes.active}>
+            <NavLink to="/">
               Help
             </NavLink>
           </li>

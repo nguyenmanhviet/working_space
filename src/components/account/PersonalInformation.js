@@ -1,33 +1,59 @@
+import { useContext, useEffect, useState } from "react";
+
+import AuthContext from "../../store/authContext";
 import classes from './PersonalInformation.module.css';
 
 const PersonalInformation = () => {
+  const [client, setClient] = useState({});
+  const authCtx = useContext(AuthContext);
+
+
+  useEffect(() => {
+    let headers = new Headers();
+
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+
+    headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
+    headers.append("Access-Control-Allow-Credentials", "true");
+    fetch("http://localhost:8080/api/customer/" + authCtx.id, {
+      method: "GET",
+      headers: headers,
+    })
+      .then((res) => res.json())
+      .then((rs2) => {
+        setClient(rs2.data);
+      });
+  }, []);
+
+
     return (
         <div className={classes.content}>
         <div className={classes.personInfo}>
           <h3>Personal Information</h3>
           <div className={classes.control}>
             <label for="name">Full name</label>
-            <input type="text" value="Nguyen Manh Viet" />
+            <input type="text" defaultValue={client.customerName} />
           </div>
           <div className={classes.control}>
             <label for="username">Username</label>
-            <input type="text" value="thaitangluc" />
+            <input type="text" defaultValue={client.customerName} />
           </div>
           <div className={classes.control}>
             <label for="email">Email address</label>
-            <input type="text" value="thidaihoc29012000@gmail.com" />
+            <input type="text" defaultValue={client.email} />
           </div>
           <div className={classes.control}>
             <label for="phone">Phone number</label>
-            <input type="text" value="0772978470" />
+            <input type="text" defaultValue={client.phoneNumber} />
           </div>
           <div className={classes.control}>
             <label for="name">Identification</label>
-            <input type="text" value="201819506" />
+            <input type="text" defaultValue={client.citizenId} />
           </div>
           <div className={classes.control}>
             <label for="birthday">Birthday</label>
-            <input type="date" className={classes.birthday} name="birthday" />
+            <input type="date" className={classes.birthday} name="birthday" defaultValue={client.birthday}/>
           </div>
           <div className={classes.control}>
             <label for="name">Nation</label>
@@ -167,7 +193,7 @@ const PersonalInformation = () => {
               <option value="Kyrgyzstan">Kyrgyzstan</option>
               <option value="Lao">Lao People's Democratic Republic</option>
               <option value="Latvia">Latvia</option>
-              <option value="Lebanon" selected>
+              <option value="Lebanon">
                 Lebanon
               </option>
               <option value="Lesotho">Lesotho</option>
@@ -300,7 +326,7 @@ const PersonalInformation = () => {
               <option value="Uzbekistan">Uzbekistan</option>
               <option value="Vanuatu">Vanuatu</option>
               <option value="Venezuela">Venezuela</option>
-              <option value="Vietnam">Viet Nam</option>
+              <option value="Viet Nam" selected>Viet Nam</option>
               <option value="Virgin Islands (British)">
                 Virgin Islands (British)
               </option>

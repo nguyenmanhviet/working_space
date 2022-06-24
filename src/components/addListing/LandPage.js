@@ -21,7 +21,26 @@ const LandPage = (props) =>  {
     
   }
   const handleSubmit = () => {
-    const data = fetch('http://localhost:8080/api/file/upload/1?path=property/room', { 
+    const propertyDto = {
+      customerId: 6,
+      propertyTypeId: 3,
+      propertyName: "Ceaira",
+      address: "Budget Street 3692, St Lucia South, Nigeria, 666342",
+      city: "Clarissa",
+      roomQuantity: 12,
+      createDate: "2000-07-01T00:00:00",
+      description: "An tuong",
+      rating: null,
+      lat: 127.0,
+      lon: 182.0,
+      images: []
+    }
+    // formData.append('propertyDto', JSON.stringify(propertyDto));
+    formData.append('propertyDto',
+      new Blob([JSON.stringify(propertyDto)], { 
+        type: 'application/json'
+      }));
+    const data = fetch('http://localhost:8080/api/properties', { 
       method: 'POST',
       body: formData
     })

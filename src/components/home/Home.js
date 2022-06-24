@@ -7,7 +7,7 @@ import Warranty from './Warranty';
 import City from './City';
 
 const Home = (props) => {
-    
+    document.title = "Roomless: houses and rooms for medium - long term rental";
 
     return (
         <Fragment>
