@@ -37,19 +37,19 @@ const RoomPage = (props) => {
 
     headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
     headers.append("Access-Control-Allow-Credentials", "true");
-    fetch("http://localhost:8080/api/properties/" + propertyId, {
+    fetch("http://128.199.166.110:8080/api/properties/" + propertyId, {
       method: "GET",
       headers: headers,
     })
       .then((res) => res.json())
       .then((data) => {
         
-        fetch("http://localhost:8080/api/property_type/property_type/" + data.data.propertyTypeId, {
+        fetch("http://128.199.166.110:8080/api/property_type/property_type/" + data.data.propertyTypeId, {
           method: "GET",
           headers: headers,
         }).then((res) => res.json())
         .then((data) => setPropertyTypeId(data.data.propertyTypeName));
-        fetch("http://localhost:8080/api/customer/" + data.data.customerId, {
+        fetch("http://128.199.166.110:8080/api/customer/" + data.data.customerId, {
           method: "GET",
           headers: headers,
         }).then((res) => res.json())
@@ -70,7 +70,7 @@ const RoomPage = (props) => {
 
     headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
     headers.append('Access-Control-Allow-Credentials', 'true')
-    fetch(`http://localhost:8080/api/properties/${propertyId}/rooms`, {
+    fetch(`http://128.199.166.110:8080/api/properties/${propertyId}/rooms`, {
       method: "GET",
       headers: headers,
     })

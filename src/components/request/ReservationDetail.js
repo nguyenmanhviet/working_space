@@ -32,7 +32,7 @@ const ReservationDetail = (props) => {
 
   const handleCancelRequest = () => {
     fetch(
-      `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=4`,
+      `http://128.199.166.110:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=4`,
       {
         method: "PUT",
         headers: {
@@ -55,7 +55,7 @@ const ReservationDetail = (props) => {
 
   const handleCompleteRequest = () => {
     fetch(
-      `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=2`,
+      `http://128.199.166.110:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=2`,
       {
         method: "PUT",
         headers: {
@@ -85,13 +85,13 @@ const ReservationDetail = (props) => {
 
     headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
     headers.append("Access-Control-Allow-Credentials", "true");
-    fetch("http://localhost:8080/api/reservation/" + reservationId, {
+    fetch("http://128.199.166.110:8080/api/reservation/" + reservationId, {
       method: "GET",
       headers: headers,
     })
       .then((res) => res.json())
       .then((data) => {
-        fetch("http://localhost:8080/api/rooms/" + data.data.roomId, {
+        fetch("http://128.199.166.110:8080/api/rooms/" + data.data.roomId, {
           method: "GET",
           
           headers: headers,
@@ -99,7 +99,7 @@ const ReservationDetail = (props) => {
           .then((res) => res.json())
           .then((rs) => {
             fetch(
-              "http://localhost:8080/api/properties/" + rs.data.propertyId,
+              "http://128.199.166.110:8080/api/properties/" + rs.data.propertyId,
               {
                 method: "GET",
                 headers: headers,

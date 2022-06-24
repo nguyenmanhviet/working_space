@@ -48,7 +48,7 @@ const ReservationRequest = (props) => {
 
   const handleApproveRequest = () => {
     fetch(
-      `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=3`,
+      `http://128.199.166.110:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=3`,
       {
         method: "PUT",
         headers: {
@@ -71,7 +71,7 @@ const ReservationRequest = (props) => {
 
   const handleCancelRequest = () => {
     fetch(
-      `http://localhost:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=4`,
+      `http://128.199.166.110:8080/api/reservation/reservation_status/${reservation.reservationId}?reservationStatus=4`,
       {
         method: "PUT",
         headers: {
@@ -100,13 +100,13 @@ const ReservationRequest = (props) => {
 
     headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
     headers.append("Access-Control-Allow-Credentials", "true");
-    fetch("http://localhost:8080/api/reservation/" + reservationId, {
+    fetch("http://128.199.166.110:8080/api/reservation/" + reservationId, {
       method: "GET",
       headers: headers,
     })
       .then((res) => res.json())
       .then((data) => {
-        fetch("http://localhost:8080/api/rooms/" + data.data.roomId, {
+        fetch("http://128.199.166.110:8080/api/rooms/" + data.data.roomId, {
           method: "GET",
 
           headers: headers,
@@ -114,7 +114,7 @@ const ReservationRequest = (props) => {
           .then((res) => res.json())
           .then((rs) => {
             fetch(
-              "http://localhost:8080/api/properties/" + rs.data.propertyId,
+              "http://128.199.166.110:8080/api/properties/" + rs.data.propertyId,
               {
                 method: "GET",
                 headers: headers,
@@ -123,7 +123,7 @@ const ReservationRequest = (props) => {
               .then((res) => res.json())
               .then((rs1) => {
                 fetch(
-                  "http://localhost:8080/api/property_type/property_type/" +
+                  "http://128.199.166.110:8080/api/property_type/property_type/" +
                     rs1.data.propertyTypeId,
                   {
                     method: "GET",
@@ -136,7 +136,7 @@ const ReservationRequest = (props) => {
               });
             setRoom(rs.data);
           });
-        fetch("http://localhost:8080/api/customer/" + data.data.customerId, {
+        fetch("http://128.199.166.110:8080/api/customer/" + data.data.customerId, {
           method: "GET",
           headers: headers,
         })

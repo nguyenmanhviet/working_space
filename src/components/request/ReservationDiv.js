@@ -21,7 +21,7 @@ const ReservationDiv = (props) => {
         headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
         headers.append("Access-Control-Allow-Credentials", "true");
         fetch(
-          "http://localhost:8080/api/rooms/" + props.reservation.roomId,
+          "http://128.199.166.110:8080/api/rooms/" + props.reservation.roomId,
           {
             method: "GET",
             headers: headers,
@@ -30,7 +30,7 @@ const ReservationDiv = (props) => {
           .then((res) => res.json())
           .then((data) => {
             fetch(
-                "http://localhost:8080/api/properties/" + data.data.propertyId,
+                "http://128.199.166.110:8080/api/properties/" + data.data.propertyId,
                 {
                   method: "GET",
                   headers: headers,
