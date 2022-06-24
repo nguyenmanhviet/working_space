@@ -67,21 +67,21 @@ const MainNavigation = (props) => {
       </div>
       <nav className={classes.nav}>
         <ul>
-          <li className={search.pathname.includes('request')? classes.active : null}>
+          {authCtx.isLoggedIn && <li className={search.pathname.includes('request')? classes.active : null}>
             <NavLink to="/request" >
               Request
             </NavLink>
-          </li>
+          </li>}
           <li className={search.pathname.includes('properties') ? classes.active : null}>
             <NavLink to="/properties" >
               Properties for rent
             </NavLink>
           </li>
-          <li className={(search.pathname.includes('reservation') && !search.pathname.includes('reservation')) ? classes.active : null}>
+          {authCtx.isLoggedIn && <li className={(search.pathname.includes('reservation') && !search.pathname.includes('reservation')) ? classes.active : null}>
             <NavLink to="/reservation" activeClassName={classes.active}>
               My reservation
             </NavLink>
-          </li>
+          </li>}
           <li>
             <NavLink to="/">
               Help
