@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import AuthContext from "../../store/authContext";
 import classes from "./ModalReview.module.css";
 import { Carousel } from "react-bootstrap";
 import ReactDOM from "react-dom";
@@ -6,6 +7,10 @@ import ReactStars from "react-rating-stars-component";
 
 const ModalReview = (props) => {
   const [price, setPrice] = useState();
+  const [rating, setRating] = useState(0);
+  const content = useRef();
+
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     let headers = new Headers();
@@ -32,8 +37,32 @@ const ModalReview = (props) => {
   };
 
   const ratingChanged = (newRating) => {
-    console.log(newRating);
+    setRating(newRating);
   };
+
+  const hanldeReview = (event) => {
+    event.preventDefault();
+    fetch("http://128.199.166.110:8080/api/reviews", {
+      method: "POST",
+      body: JSON.stringify({
+        customerId: authCtx.id,
+        propertyId: props.room.propertyId,
+        rating: rating,
+        content: content.current.value,
+        createDate: new Date(),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        props.onExitModalReview();
+      });
+
+  }
 
   return ReactDOM.createPortal(
     <div className={classes.modalReview}>
@@ -66,10 +95,11 @@ const ModalReview = (props) => {
             <span>Description: </span>
             {props.room.description}
           </p>
-
+          <form onSubmit={hanldeReview}>
           <div className={classes.containerRating}>
             <label>Rating: </label>
             <ReactStars
+            
               classNames={classes.ratingStar}
               count={5}
               onChange={ratingChanged}
@@ -78,10 +108,11 @@ const ModalReview = (props) => {
             />
           </div>
           <span>Write your review:</span>
-          <textarea className={classes.textReview}></textarea>
+          <textarea className={classes.textReview} ref={content}></textarea>
           <div className={classes.btn}>
             <button>Review</button>
           </div>
+          </form>
         </div>
       </div>
     </div>,
