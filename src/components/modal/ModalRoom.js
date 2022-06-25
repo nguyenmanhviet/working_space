@@ -96,7 +96,7 @@ const ModalRoom = (props) => {
                 <IoDocumentTextOutline /> {props.room.description}
               </p>
               <p>
-                <RiMoneyDollarCircleFill /> {price} VNĐ/day
+                <RiMoneyDollarCircleFill /> {price} $/day
               </p>
               <p>
                 <IoIosCalendar /> Available{" "}

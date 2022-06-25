@@ -100,7 +100,7 @@ const ReservationDiv = (props) => {
           <span>
             <BsPaypal />
           </span>{" "}
-          {props.reservation.total} VNĐ
+          {props.reservation.total} $
         </div>
       </div>
       <div className={classes.div3}>

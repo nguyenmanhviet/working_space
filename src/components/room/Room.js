@@ -61,7 +61,7 @@ const Room = (props) => {
         </p>
         <p className={classes.price}>
           <RiMoneyDollarCircleFill className={classes.icon} />
-          {price} VNĐ/day
+          {price} $/day
         </p>
         <div>
           <button onClick={onActiveModal}>Detail</button>

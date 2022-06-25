@@ -237,7 +237,7 @@ const ModalRent = (props) => {
             <h4>Total</h4>
             <div className={classes.pricePerMonth}>
               <p>
-                Price/Day: <span>{price} ₫</span>
+                Price/Day: <span>{price} $</span>
               </p>
               <p>
                 Days rent: <span>X {quantityDays}</span>
@@ -247,7 +247,7 @@ const ModalRent = (props) => {
             <div className={classes.pricePerMonth}>
               <p>
                 Total to confirm:{" "}
-                <span>{price * quantityDays} ₫</span>
+                <span>{price * quantityDays} $</span>
               </p>
             </div>
           </div>

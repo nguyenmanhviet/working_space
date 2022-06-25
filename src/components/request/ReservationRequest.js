@@ -202,7 +202,7 @@ const ReservationRequest = (props) => {
                 <span>
                   <BsPaypal />
                 </span>{" "}
-                Amount: <span>{reservation.total} VNĐ</span>
+                Amount: <span>{reservation.total} $</span>
               </p>
             </div>
             <div className={classes.rentInfo}>

@@ -111,7 +111,7 @@ const ModalPayment = (props) => {
               <p><span><BsCheckCircle /></span> Daily rent booked: <span>{props.reservation.quantity}</span></p> 
           </div>
           <div className={classes.rentInfo}>
-              <p><span><BsPaypal /></span> Amount: <span>{props.reservation.total} VNĐ</span></p> 
+              <p><span><BsPaypal /></span> Amount: <span>{props.reservation.total} $</span></p> 
           </div>
           <div className={classes.rentInfo}>
               <p><span><BsFillCalendar2CheckFill /></span> Check-in: <span>{props.reservation.startDate}</span> </p> 

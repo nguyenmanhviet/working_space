@@ -213,7 +213,7 @@ const AddRoom = (props) => {
             {/*  */}
             <div className={classes.control}>
               <label for="price">
-                At what price do you want to rent it <span>*</span> (VNĐ)
+                At what price do you want to rent it <span>*</span> ($)
               </label>
               <input
                 ref={hourlyRef}
@@ -271,7 +271,7 @@ const AddRoom = (props) => {
 
             <div className={classes.control}>
               <label for="deposit">
-                How much is the deposit <span>*</span> (VNĐ)
+                How much is the deposit <span>*</span> (%)
               </label>
               <input
                 ref={depositRef}
